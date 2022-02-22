@@ -1,0 +1,30 @@
+{% extends 'baseViews/navigationBase.html' %}
+
+{% block body %}
+    <h1 class="mx-5 my-5 text-center text-white">Catalog</h1>
+            {% if articles %}
+
+                    <div class="album py-5">
+                        <div class="container">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                        {% for article in articles %}
+                            <div class="col">
+                                <div class="card shadow-sm">
+                                    <img src='{{ article.image.url }}' class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#55595c"></rect></img>
+                                    <div class="card-body">
+                                        <p class="card-text text-dark text-center" style="font-size: 25px">{{ article.title }}</p>
+                                        <p><a class="btn btn-secondary" href="{% url 'details article' article.id %}">Details »</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+            {% else %}
+                <h1 class="mx-5 my-5 text-center text-white">No articles yet!</h1>
+            {% endif %}
+
+
+{% endblock %}

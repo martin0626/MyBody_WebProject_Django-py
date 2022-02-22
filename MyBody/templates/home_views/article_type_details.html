@@ -1,0 +1,18 @@
+{% extends 'baseViews/navigationBase.html' %}
+
+{% block body %}
+    <div class="container pt-5 ">
+
+        <div class="row" >
+
+            <div class="col-md-8">
+                <img class="img-fluid rounded" src="{{ type_article.image.url }}" alt="">
+            </div>
+
+            <div class="col-md-4 text-dark bg-light rounded">
+                <h3 class="my-3">{{ type_article.title }}</h3>
+                <p>{{ type_article.description }}</p>
+            </div>
+
+        </div>
+{% endblock %}

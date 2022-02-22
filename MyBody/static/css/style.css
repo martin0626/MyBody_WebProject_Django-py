@@ -1,0 +1,30 @@
+body {
+    background-image: linear-gradient( rgb(0 0 0 / 70%), rgb(0 0 0 / 70%)), url(/static/images/free-fitness-wallpaper-42312-43308-hd-wallpapers.jpg);;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container-marketing {
+    margin: 50px;
+    color: white;
+}
+
+section{
+    margin: 150px;
+    color: white;
+}
+
+.user-forms {
+    padding-top: 40px;
+    color: white;
+}
+
+label {
+    margin-bottom: 11px;
+    margin-top: 11px;
+}
+
+#delete-conf {
+    margin-top: 10%;
+}

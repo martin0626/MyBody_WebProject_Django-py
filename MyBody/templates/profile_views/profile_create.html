@@ -1,0 +1,31 @@
+{% extends 'baseViews/navigationBase.html' %}
+{% load static %}
+{% block styles %}
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="container">
+        <h1 class="text-center text-white mt-5">Change profile info!</h1>
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 text-white">
+                <div class="text-center pt-3">
+                    {% if profile.picture %}
+                        <img src="{{ profile.picture.url }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                    {% else %}
+                        <img src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                    {% endif %}
+                </div>
+                <form method="post" action="{% url 'profile edit' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button class="btn btn-primary mt-2">Save changes</button>
+                    <a href="{% url 'profile delete' %}" class="btn btn-danger mt-2">Delete profile</a>
+                </form>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+{% endblock %}

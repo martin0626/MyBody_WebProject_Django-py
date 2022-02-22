@@ -1,0 +1,69 @@
+{% extends 'baseViews/navigationBase.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="/static/css/details.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/profileTag.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="project-info-box mt-0">
+                    <h5>DESCRIPTION</h5>
+                    <p class="mb-0">{{ article.description }}</p>
+                </div><!-- / project-info-box -->
+
+                <div class="project-info-box">
+                    <p><b>Author: </b></p>
+                    <div class="chip chip-md">
+                        <a class="text-decoration-none p-2 bg-light text-dark"
+                           href="{% url 'profile details' article.owner.id %}">
+                            {% if article.owner.profile.picture %}
+                            <img class="rounded-circle border border-dark" src="{{ article.owner.profile.picture.url }}"
+                                 alt="Contact Person"> {{ article.owner.username }}
+                            {% else %}
+                            <img class="rounded-circle border border-dark" src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
+                                 alt="Contact Person"> {{ article.owner.username }}
+                            {% endif %}
+                        </a>
+                    </div>
+                </div><!-- / project-info-box -->
+
+                <div class="project-info-box mt-0 mb-0 text-center">
+                    <p class="mb-0">
+                    {% if not request.user.is_anonymous %}
+                        {% if not is_liked %}
+                            <a class="text-right" href="{% url 'like' article.id %}"><i class="fa fa-heart-o" style="font-size:30px"></i></a>
+                        {% else %}
+                            <a class="text-right" href="{% url 'like' article.id %}"><i class="fa fa-heart" style="font-size:30px"></i></a>
+                        {% endif %}
+                        <span class="fw-bold mr-10 va-middle hide-mobile">{{ likes_count }}</span>
+                    {% else %}
+                        <span class="fw-bold mr-10 va-middle hide-mobile">Likes: {{ likes_count }}</span>
+                    {% endif %}
+
+
+
+                    </p>
+                </div><!-- / project-info-box -->
+
+            </div><!-- / column -->
+            <div class="col-md-7">
+                <img src="{{ article.image.url }}" alt="project-image" class="rounded">
+                <div class="project-info-box">
+                    <p><b>Categories:</b> {{ article.type|capfirst }}</p>
+                </div><!-- / project-info-box -->
+
+                {% if is_owner %}
+                    <a type="button" href="{% url 'edit article' article.id %}" class="btn btn-primary mb-5">Edit</a>
+                    <a type="button" href="{% url 'delete article' article.id %}" class="btn btn-danger mb-5">Delete</a>
+                {% endif %}
+
+            </div><!-- / column -->
+
+        </div>
+    </div>
+{% endblock %}
