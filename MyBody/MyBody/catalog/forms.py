@@ -4,7 +4,7 @@ from os.path import join
 from django import forms
 
 from MyBody import settings
-from MyBody.catalog.models import Article
+from MyBody.catalog.models import Article, CommentModel
 
 
 class BootsTrapMixin:
@@ -63,3 +63,21 @@ class DeleteArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ()
+
+
+class CreateCommentForm(BootsTrapMixin, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['content'].widget.attrs.update({
+            'placeholder': 'Make Comment...',
+            'rows': 3,
+        })
+
+    class Meta:
+        model = CommentModel
+        fields = ['content']
+        labels = {
+            'content': 'Add Comment'
+        }
+

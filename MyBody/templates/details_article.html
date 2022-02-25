@@ -22,11 +22,13 @@
                         <a class="text-decoration-none p-2 bg-light text-dark"
                            href="{% url 'profile details' article.owner.id %}">
                             {% if article.owner.profile.picture %}
-                            <img class="rounded-circle border border-dark" src="{{ article.owner.profile.picture.url }}"
-                                 alt="Contact Person"> {{ article.owner.username }}
+                                <img class="rounded-circle border border-dark"
+                                     src="{{ article.owner.profile.picture.url }}"
+                                     alt="Contact Person"> {{ article.owner.username }}
                             {% else %}
-                            <img class="rounded-circle border border-dark" src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
-                                 alt="Contact Person"> {{ article.owner.username }}
+                                <img class="rounded-circle border border-dark"
+                                     src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
+                                     alt="Contact Person"> {{ article.owner.username }}
                             {% endif %}
                         </a>
                     </div>
@@ -34,21 +36,21 @@
 
                 <div class="project-info-box mt-0 mb-0 text-center">
                     <p class="mb-0">
-                    {% if not request.user.is_anonymous %}
-                        {% if not is_liked %}
-                            <a class="text-right" href="{% url 'like' article.id %}"><i class="fa fa-heart-o" style="font-size:30px"></i></a>
+                        {% if not request.user.is_anonymous %}
+                            {% if not is_liked %}
+                                <a class="text-right" href="{% url 'like' article.id %}"><i class="fa fa-heart-o"
+                                                                                            style="font-size:30px"></i></a>
+                            {% else %}
+                                <a class="text-right" href="{% url 'like' article.id %}"><i class="fa fa-heart"
+                                                                                            style="font-size:30px"></i></a>
+                            {% endif %}
+                            <span class="fw-bold mr-10 va-middle hide-mobile">{{ likes_count }}</span>
                         {% else %}
-                            <a class="text-right" href="{% url 'like' article.id %}"><i class="fa fa-heart" style="font-size:30px"></i></a>
+                            <span class="fw-bold mr-10 va-middle hide-mobile">Likes: {{ likes_count }}</span>
                         {% endif %}
-                        <span class="fw-bold mr-10 va-middle hide-mobile">{{ likes_count }}</span>
-                    {% else %}
-                        <span class="fw-bold mr-10 va-middle hide-mobile">Likes: {{ likes_count }}</span>
-                    {% endif %}
-
-
-
                     </p>
                 </div><!-- / project-info-box -->
+
 
             </div><!-- / column -->
             <div class="col-md-7">
@@ -62,8 +64,45 @@
                     <a type="button" href="{% url 'delete article' article.id %}" class="btn btn-danger mb-5">Delete</a>
                 {% endif %}
 
-            </div><!-- / column -->
+                {% if not request.user.is_anonymous %}
+                    <div class="project-info-box border border-primary">
+                        <div class="form-outline">
+                            <form method="Post" action="{% url 'details article' article.id %}">
+                                {% csrf_token %}
+                                {{ form }}
+                                <div class="text-center">
+                                    <button class="btn btn-primary mt-4" type="submit">Add Comment</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+                <h3 class="text-white"><b>Comments:</b></h3>
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="project-info-box border border-primary">
+                            <div class="chip chip-md">
+                                {% if comment.owner.profile.picture %}
+                                <img class="rounded-circle border border-dark"
+                                     src="{{ article.owner.profile.picture.url }}"
+                                     alt="Contact Person"> {{ comment.owner.username }}
+                            {% else %}
+                                <img class="rounded-circle border border-dark"
+                                     src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
+                                     alt="Contact Person"> {{ comment.owner.username }}
+                            {% endif %}
 
+                            </div>
+                            <div class="comment-content mt-2">
+                                <p class="mb-3">{{ comment.content }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+            {% endif %}
+
+
+            </div>
         </div>
     </div>
+
 {% endblock %}

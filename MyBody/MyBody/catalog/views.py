@@ -4,14 +4,15 @@ from os.path import join
 from django.shortcuts import render, redirect
 
 from MyBody import settings
-from MyBody.catalog.forms import CreateForm, EditForm, DeleteArticleForm
-from MyBody.catalog.models import Article, LikeArticle
+from MyBody.catalog.forms import CreateForm, EditForm, DeleteArticleForm, CreateCommentForm
+from MyBody.catalog.models import Article, LikeArticle, CommentModel
 
 
 def catalog_view(request):
     articles = Article.objects.all()
+
     context = {
-        'articles': articles
+        'articles': articles,
     }
     return render(request, 'catalog.html', context)
 
@@ -72,10 +73,24 @@ def details_article(request, pk):
     article = Article.objects.get(pk=pk)
     user = request.user
     likes = len(LikeArticle.objects.filter(article_id=pk))
+    comments = CommentModel.objects.all()
+
+    if request.method == 'POST':
+        form = CreateCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.owner = user
+            comment.save()
+            return redirect('details article', article.id)
+
+    else:
+        form = CreateCommentForm()
 
     context = {
+        'form': form,
         'article': article,
         'likes_count': likes,
+        'comments': comments,
     }
 
     if not user.is_anonymous:

@@ -57,3 +57,13 @@ class LikeArticle(models.Model):
         MyBodyUser, on_delete=models.CASCADE,
         null=True,
     )
+
+
+class CommentModel(models.Model):
+    owner = models.ForeignKey(
+        MyBodyUser,
+        on_delete=models.CASCADE,
+        default=None,
+    )
+    content = models.TextField()
+
