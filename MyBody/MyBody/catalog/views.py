@@ -43,7 +43,7 @@ def edit_article(request, pk):
             article = form.save(commit=False)
             article.owner = request.user
             article.save()
-            return redirect('catalog')
+            return redirect('details article', pk)
 
     else:
         form = EditForm(initial=article.__dict__)
@@ -73,13 +73,14 @@ def details_article(request, pk):
     article = Article.objects.get(pk=pk)
     user = request.user
     likes = len(LikeArticle.objects.filter(article_id=pk))
-    comments = CommentModel.objects.all()
+    comments = CommentModel.objects.filter(article_id=pk)
 
     if request.method == 'POST':
         form = CreateCommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.owner = user
+            comment.article = article
             comment.save()
             return redirect('details article', article.id)
 

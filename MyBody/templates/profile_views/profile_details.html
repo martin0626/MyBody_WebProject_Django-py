@@ -18,47 +18,56 @@
                     <div class="media align-items-end profile-head">
                         {% if profile.picture %}
                             <div class="profile mr-3">
-                                <img src="{{ profile.picture.url }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                <img src="{{ profile.picture.url }}" alt="..." width="130"
+                                     class="rounded mb-2 img-thumbnail">
                                 {% if is_owner %}
-                                    <a href="{% url 'profile edit' %}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
+                                    <a href="{% url 'profile edit' %}" class="btn btn-outline-dark btn-sm btn-block">Edit
+                                        profile</a>
                                 {% endif %}
                             </div>
                         {% else %}
                             <div class="profile mr-3">
-                                <img src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png" alt="..." width="130" class="rounded mb-2 img-thumbnail">
-                                 {% if is_owner %}
-                                    <a href="{% url 'profile edit' %}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a>
-                                 {% endif %}
+                                <img src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
+                                     alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                {% if is_owner %}
+                                    <a href="{% url 'profile edit' %}" class="btn btn-outline-dark btn-sm btn-block">Edit
+                                        profile</a>
+                                {% endif %}
                             </div>
                         {% endif %}
                         <div class="media-body mb-5 text-white">
                             <h4 class="mt-0 mb-0">{{ user.username }}</h4>
-                            <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>{{ user.email }}</p>
+                            <p class="small mb-4"><i class="fas fa-map-marker-alt mr-2"></i>{{ user.email }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="bg-light p-4 d-flex justify-content-end text-center">
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item">
-                            <h5 class="font-weight-bold mb-0 d-block">{{ articles|length }}</h5><small class="text-muted"> <i class="fa fa-list"></i>Articles</small>
+                            <h5 class="font-weight-bold mb-0 d-block">{{ articles|length }}</h5><small
+                                class="text-muted"> <i class="fa fa-list"></i>Articles</small>
                         </li>
                         <li class="list-inline-item">
-                            <h5 class="font-weight-bold mb-0 d-block">{{ likes }}</h5><small class="text-muted"> <i class="fa fa-heart"></i>Likes</small>
+                            <h5 class="font-weight-bold mb-0 d-block">{{ likes }}</h5><small class="text-muted"> <i
+                                class="fa fa-heart"></i>Likes</small>
                         </li>
                     </ul>
                 </div>
-                {% if profile.description or profile.gender or profile.birth_date%}
+                {% if profile.description or profile.gender or profile.birth_date %}
                     <div class="px-4 py-3">
                         <h5 class="mb-0">About</h5>
                         <div class="p-4 rounded shadow-sm bg-light">
                             {% if profile.gender %}
-                                <p class="font-italic mb-0">Gender: {{ profile.gender }}</p>
+                                <p class="font-italic mb-0"><b>Gender:</b> {{ profile.gender }}</p>
                             {% endif %}
                             {% if profile.birth_date %}
-                                <p class="font-italic mb-0">Age: {{ profile.age }}</p>
+                                <p class="font-italic mb-0"><b>Age:</b> {{ profile.age }}</p>
                             {% endif %}
                             {% if profile.description %}
-                                <p class="font-italic mb-0">Description: {{ profile.description }}</p>
+                                <p class="font-italic mb-0"><b>Description:</b> {{ profile.description }}</p>
+                            {% endif %}
+                            {% if profile.phone_for_contact %}
+                                <p class="font-italic mb-0"><b>Phone:</b> {{ profile.phone_for_contact }}</p>
                             {% endif %}
                         </div>
                     </div>
@@ -76,12 +85,14 @@
                     <div class="row">
                         {% if articles %}
                             {% for article in articles %}
-                                <a href="{% url 'details article' article.id %}" class="col-lg-6 mb-2 pr-lg-1"><img src="{{ article.image.url }}" alt="" class="img-fluid rounded shadow-sm"></a>
+                                <a href="{% url 'details article' article.id %}" class="col-lg-6 mb-2 pr-lg-1"><img
+                                        src="{{ article.image.url }}" alt="" class="img-fluid rounded shadow-sm"></a>
                             {% endfor %}
                         {% else %}
-                            <div class="text-center" >
+                            <div class="text-center">
                                 <h5>No articles yet!</h5>
-                                <a href="{% url 'create article' %}" class="btn btn-primary mt-2" type="submit">Create your own article</a>
+                                <a href="{% url 'create article' %}" class="btn btn-primary mt-2" type="submit">Create
+                                    your own article</a>
                             </div>
                         {% endif %}
                     </div>

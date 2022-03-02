@@ -11,30 +11,33 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-5">
-                <div class="project-info-box mt-0">
-                    <h5>DESCRIPTION</h5>
-                    <p class="mb-0">{{ article.description }}</p>
-                </div><!-- / project-info-box -->
 
                 <div class="project-info-box">
-                    <p><b>Author: </b></p>
-                    <div class="chip chip-md">
+{#                    <p><b>Author: </b></p>#}
+                    <div class="chip chip-md text-center">
                         <a class="text-decoration-none p-2 bg-light text-dark"
                            href="{% url 'profile details' article.owner.id %}">
                             {% if article.owner.profile.picture %}
                                 <img class="rounded-circle border border-dark"
                                      src="{{ article.owner.profile.picture.url }}"
-                                     alt="Contact Person"> {{ article.owner.username }}
+                                     alt="Contact Person"> <b>{{ article.owner.username }}</b>
                             {% else %}
                                 <img class="rounded-circle border border-dark"
                                      src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
-                                     alt="Contact Person"> {{ article.owner.username }}
+                                     alt="Contact Person"> <b>{{ article.owner.username }}</b>
                             {% endif %}
                         </a>
                     </div>
                 </div><!-- / project-info-box -->
 
-                <div class="project-info-box mt-0 mb-0 text-center">
+                <div class="project-info-box mt-0">
+                    <h5>{{ article.title }}</h5>
+                    <p class="mb-0">{{ article.description }}</p>
+                </div><!-- / project-info-box -->
+
+
+
+                <div class="project-info-box mt-0 mb-4 text-center">
                     <p class="mb-0">
                         {% if not request.user.is_anonymous %}
                             {% if not is_liked %}
@@ -77,14 +80,15 @@
                         </div>
                     </div>
                 {% endif %}
-                <h3 class="text-white"><b>Comments:</b></h3>
+
                 {% if comments %}
+                    <h3 class="text-white"><b>Comments:</b></h3>
                     {% for comment in comments %}
                         <div class="project-info-box border border-primary">
                             <div class="chip chip-md">
-                                {% if comment.owner.profile.picture %}
+                            {% if comment.owner.profile.picture %}
                                 <img class="rounded-circle border border-dark"
-                                     src="{{ article.owner.profile.picture.url }}"
+                                     src="{{ comment.owner.profile.picture.url }}"
                                      alt="Contact Person"> {{ comment.owner.username }}
                             {% else %}
                                 <img class="rounded-circle border border-dark"
@@ -98,6 +102,8 @@
                             </div>
                         </div>
                     {% endfor %}
+            {% else %}
+                    <h1 class="m-3 text-white text-center">No Comments Yet!</h1>
             {% endif %}
 
 

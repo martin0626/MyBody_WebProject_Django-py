@@ -65,5 +65,10 @@ class CommentModel(models.Model):
         on_delete=models.CASCADE,
         default=None,
     )
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+        default=None,
+    )
     content = models.TextField()
 
