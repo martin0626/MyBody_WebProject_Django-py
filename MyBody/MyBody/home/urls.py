@@ -1,7 +1,7 @@
 from django.urls import path
-from MyBody.home.views import home_view, details_article_type
+from MyBody.home.views import HomeView, DetailsArticleType
 
 urlpatterns = [
-   path('', home_view, name='home'),
-   path('info/type/<int:pk>', details_article_type, name='article info'),
+   path('', HomeView.as_view(), name='home'),
+   path('info/type/<int:pk>', DetailsArticleType.as_view(), name='article info'),
 ]

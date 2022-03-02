@@ -1,21 +1,18 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 
 from MyBody.home.models import ArticleTypes
 
 
-def home_view(request):
-    article_types = ArticleTypes.objects.all()
-    context = {
-        'article_types': article_types,
-    }
-    return render(request, 'index.html', context)
+class HomeView(ListView):
+    template_name = 'index.html'
+    model = ArticleTypes
+    context_object_name = 'article_types'
+    ordering = ('title',)
 
 
-def details_article_type(request, pk):
-    type_article = ArticleTypes.objects.get(pk=pk)
-    context = {
-        'type_article': type_article,
+class DetailsArticleType(DetailView):
+    model = ArticleTypes
+    template_name = 'home_views/article_type_details.html'
+    context_object_name = 'type_article'
 
-    }
-
-    return render(request, 'home_views/article_type_details.html', context)

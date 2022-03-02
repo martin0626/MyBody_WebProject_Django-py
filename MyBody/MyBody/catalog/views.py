@@ -2,37 +2,30 @@ import os
 from os.path import join
 
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView
 
 from MyBody import settings
 from MyBody.catalog.forms import CreateForm, EditForm, DeleteArticleForm, CreateCommentForm
 from MyBody.catalog.models import Article, LikeArticle, CommentModel
 
 
-def catalog_view(request):
-    articles = Article.objects.all()
-
-    context = {
-        'articles': articles,
-    }
-    return render(request, 'catalog.html', context)
+class CatalogView(ListView):
+    model = Article
+    template_name = 'catalog.html'
+    context_object_name = 'articles'
+    ordering = ('title',)
 
 
-def create_article(request):
-    if request.method == 'POST':
-        form = CreateForm(request.POST, request.FILES)
-        if form.is_valid():
-            article = form.save(commit=False)
-            article.owner = request.user
-            article.save()
-            return redirect('catalog')
-    else:
-        form = CreateForm()
+class CreateArticle(CreateView):
+    model = Article
+    form_class = CreateForm
+    template_name = 'create_catalog.html'
+    success_url = reverse_lazy('catalog')
 
-    context = {
-        'form': form,
-    }
-
-    return render(request, 'create_catalog.html', context)
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
 def edit_article(request, pk):
