@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 
 from MyBody.catalog.models import Article, LikeArticle
 from MyBody.users.forms import ProfileForm, RegisterForm, LoginForm
+from MyBody.users.helpers import send_email_message
 from MyBody.users.models import MyBodyUser, Profile
 
 
@@ -46,6 +47,9 @@ def register_view(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
+            email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
+            send_email_message(email, username)
             login(request, user)
             return redirect('home')
     else:

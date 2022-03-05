@@ -5,7 +5,7 @@ from MyBody.users.models import Profile, MyBodyUser
 
 
 @admin.register(MyBodyUser)
-class ProfileAdmin(UserAdmin):
+class MyBodyUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'is_staff')
     list_filter = ('is_staff', 'is_superuser', 'groups')
     search_fields = ('username', 'email')
