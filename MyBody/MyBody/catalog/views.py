@@ -1,12 +1,10 @@
-import os
-from os.path import join
-
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
-
-from MyBody import settings
 from MyBody.catalog.forms import CreateForm, EditForm, DeleteArticleForm, CreateCommentForm
+from MyBody.catalog.helpers import article_permissions_required
 from MyBody.catalog.models import Article, LikeArticle, CommentModel
 
 
@@ -17,7 +15,7 @@ class CatalogView(ListView):
     ordering = ('title',)
 
 
-class CreateArticle(CreateView):
+class CreateArticle(LoginRequiredMixin, CreateView):
     model = Article
     form_class = CreateForm
     template_name = 'create_catalog.html'
@@ -28,6 +26,7 @@ class CreateArticle(CreateView):
         return super().form_valid(form)
 
 
+@article_permissions_required(required_permissions=['catalog.change_article'])
 def edit_article(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == 'POST':
@@ -47,6 +46,7 @@ def edit_article(request, pk):
     return render(request, 'edit_catalog.html', context)
 
 
+@article_permissions_required(required_permissions=['catalog.delete_article'])
 def delete_article(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == 'POST':
@@ -96,6 +96,7 @@ def details_article(request, pk):
     return render(request, 'details_article.html', context)
 
 
+@permission_required('catalog.add_likearticle', 'catalog.delete_likearticle')
 def like_article(request, pk):
     article = Article.objects.get(pk=pk)
     user = request.user

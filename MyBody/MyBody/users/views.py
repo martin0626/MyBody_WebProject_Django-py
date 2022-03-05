@@ -1,6 +1,8 @@
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
+from MyBody.catalog.helpers import article_permissions_required, profile_permissions_required, add_user_to_default_group
 from MyBody.catalog.models import Article, LikeArticle
 from MyBody.users.forms import ProfileForm, RegisterForm, LoginForm
 from MyBody.users.helpers import send_email_message
@@ -50,6 +52,7 @@ def register_view(request):
             email = form.cleaned_data.get('email')
             username = form.cleaned_data.get('username')
             send_email_message(email, username)
+            add_user_to_default_group(user)
             login(request, user)
             return redirect('home')
     else:
@@ -83,6 +86,7 @@ def profile_details(request, pk):
     return render(request, 'profile_views/profile_details.html', context)
 
 
+@login_required(login_url='login/')
 def profile_delete(request):
     if request.method == 'POST':
         request.user.delete()
