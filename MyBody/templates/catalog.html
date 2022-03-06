@@ -2,29 +2,75 @@
 
 {% block body %}
     <h1 class="mx-5 my-5 text-center text-white">Catalog</h1>
-            {% if articles %}
+    {% if articles %}
 
-                    <div class="album py-5">
-                        <div class="container">
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                        {% for article in articles %}
-                            <div class="col">
-                                <div class="card shadow-sm">
-                                    <img src='{{ article.image.url }}' class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#55595c"></rect></img>
-                                    <div class="card-body">
-                                        <p class="card-text text-dark text-center" style="font-size: 25px">{{ article.title }}</p>
-                                        <p><a class="btn btn-secondary" href="{% url 'details article' article.id %}">Details »</a></p>
-                                    </div>
+        <div class="album py-5">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    {% for article in articles %}
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                <img src='{{ article.image.url }}' class="bd-placeholder-img card-img-top" width="100%"
+                                     height="225" xmlns="http://www.w3.org/2000/svg" role="img"
+                                     aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                                     focusable="false">
+                                <rect width="100%" height="100%" fill="#55595c"></rect>
+                                </img>
+                                <div class="card-body">
+                                    <p class="card-text text-dark text-center"
+                                       style="font-size: 25px">{{ article.title }}</p>
+                                    <p><a class="btn btn-secondary" href="{% url 'details article' article.id %}">Details
+                                        »</a></p>
                                 </div>
                             </div>
-                        {% endfor %}
-                            </div>
                         </div>
-                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
-            {% else %}
-                <h1 class="mx-5 my-5 text-center text-white">No articles yet!</h1>
-            {% endif %}
+    {% else %}
+        <h1 class="mx-5 my-5 text-center text-white">No articles yet!</h1>
+    {% endif %}
+    <div class="text-center" style="margin-left: 640px">
+        <nav aria-label="..." class="text-center">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="#">Previous</a>
+                    </li>
+                {% endif %}
+                {#                    <li class="page-item">#}
+                {#                        <a class="page-link" href="#">{{page_obj.number}} of {{ page_obj.paginator.num_pages }} <span class="sr-only">(current)</span></a>#}
+                {#                    </li>#}
+                {% for page_num in page_obj.paginator.page_range %}
+                    {% if page_num == page_obj.number %}
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ page_num }}<span class="sr-only">(current)</span></a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}<span class="sr-only">(current)</span></a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 
 
 {% endblock %}

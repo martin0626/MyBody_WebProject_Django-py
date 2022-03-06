@@ -13,6 +13,7 @@ class CatalogView(ListView):
     template_name = 'catalog.html'
     context_object_name = 'articles'
     ordering = ('title',)
+    paginate_by = 3
 
 
 class CreateArticle(LoginRequiredMixin, CreateView):

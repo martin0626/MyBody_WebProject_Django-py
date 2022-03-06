@@ -5,29 +5,33 @@
     {% if not request.user.is_authenticated %}
         <section class="jumbotron text-center">
             <div class="container">
-              <h1>Welcome to MyBody website!</h1>
-              <p class="lead text">Here you can share your ideas, trainings, nutrition and free time in articles, which every user can see, comment and like. Help people improve their lifestyle or improve your!</p>
-              <p>
-                <a href="{% url 'register' %}" class="btn btn-primary my-2">Register</a>
-                <a href="{% url 'login' %}" class="btn btn-primary my-2">Login</a>
-              </p>
+                <h1>Welcome to MyBody website!</h1>
+                <p class="lead text">Here you can share your ideas, trainings, nutrition and free time in articles,
+                    which every user can see, comment and like. Help people improve their lifestyle or improve your!</p>
+                <p>
+                    <a href="{% url 'register' %}" class="btn btn-primary my-2">Register</a>
+                    <a href="{% url 'login' %}" class="btn btn-primary my-2">Login</a>
+                </p>
             </div>
         </section>
     {% endif %}
-        <div class="container-marketing text-center">
-            <div class="row">
-                {% if article_types %}
-                    {% for type in article_types %}
-                      <div class="col-lg-4">
-                        <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="{{ type.image.url }}" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"></rect></img>
+    <div class="container-marketing text-center">
+        <div class="row">
+            {% if article_types %}
+                {% for type in article_types %}
+                    <div class="col-lg-4">
+                        <img class="bd-placeholder-img rounded-circle" width="140" height="140"
+                             src="{{ type.image.url }}" role="img" aria-label="Placeholder: 140x140"
+                             preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <rect width="100%" height="100%" fill="#777"></rect>
+                        </img>
 
                         <h2>{{ type.title }}</h2>
                         <p>{{ type.description|truncatechars:40 }}</p>
                         <p><a class="btn btn-secondary" href="{% url 'article info' type.id %}">View details »</a></p>
-                      </div><!-- /.col-lg-4 -->
-                    {% endfor %}
-               {% endif %}
-            </div>
+                    </div><!-- /.col-lg-4 -->
+                {% endfor %}
+            {% endif %}
         </div>
-
+    </div>
 {% endblock %}
