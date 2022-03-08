@@ -2,10 +2,14 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, TemplateView
 from MyBody.catalog.forms import CreateForm, EditForm, DeleteArticleForm, CreateCommentForm
 from MyBody.catalog.helpers import article_permissions_required
 from MyBody.catalog.models import Article, LikeArticle, CommentModel
+
+
+class UnauthorizedView(TemplateView):
+    template_name = 'unauthorized_user.html'
 
 
 class CatalogView(ListView):
@@ -25,6 +29,11 @@ class CreateArticle(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('unauthorized view')
+        return super().dispatch(request, *args, **kwargs)
 
 
 @article_permissions_required(required_permissions=['catalog.change_article'])
