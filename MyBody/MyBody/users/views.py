@@ -1,29 +1,39 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
-from MyBody.catalog.helpers import article_permissions_required, profile_permissions_required, add_user_to_default_group
+
 from MyBody.catalog.models import Article, LikeArticle
 from MyBody.users.forms import ProfileForm, RegisterForm, LoginForm
 from MyBody.users.helpers import send_email_message
 from MyBody.users.models import MyBodyUser, Profile
 
 
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('home')
-    else:
-        form = LoginForm()
-    context = {
-        'form': form,
-    }
-    return render(request, 'profile_views/login.html', context)
+class UserLoginView(LoginView):
+    form_class = LoginForm
+    template_name = 'profile_views/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
+class UserRegistrationView(CreateView):
+    form_class = RegisterForm
+    template_name = 'profile_views/register_user.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        login(self.request, self.object)
+
+        return result
+
+
+class UserLogoutView(LogoutView):
+    pass
 
 
 def profile_edit(request):
@@ -41,31 +51,6 @@ def profile_edit(request):
         "profile": profile,
     }
     return render(request, 'profile_views/profile_create.html', context)
-
-
-def register_view(request):
-
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            email = form.cleaned_data.get('email')
-            username = form.cleaned_data.get('username')
-            send_email_message(email, username)
-            add_user_to_default_group(user)
-            login(request, user)
-            return redirect('home')
-    else:
-        form = RegisterForm()
-    context = {
-        'form': form
-    }
-    return render(request, 'profile_views/register_user.html', context)
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('home')
 
 
 def profile_details(request, pk):

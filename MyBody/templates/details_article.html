@@ -85,6 +85,9 @@
                     <h3 class="text-white"><b>Comments:</b></h3>
                     {% for comment in comments %}
                         <div class="project-info-box border border-primary">
+                        {% if comment.owner.id == request.user.id %}
+                            <span class="d-flex flex-row-reverse"><a type="submit" href="{% url 'delete comment' comment.id %}" class="btn-close"></a></span>
+                        {% endif %}
                             <div class="chip chip-md">
                             {% if comment.owner.profile.picture %}
                                 <img class="rounded-circle border border-dark"
@@ -95,6 +98,7 @@
                                      src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
                                      alt="Contact Person"> {{ comment.owner.username }}
                             {% endif %}
+
 
                             </div>
                             <div class="comment-content mt-2">

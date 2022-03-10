@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 
-from MyBody.catalog.models import Article
+from MyBody.catalog.models import Article, CommentModel
 
 
 def article_permissions_required(required_permissions):
@@ -20,12 +20,12 @@ def article_permissions_required(required_permissions):
     return decorator
 
 
-def profile_permissions_required(required_permissions):
+def comments_permissions_required(required_permissions):
     def decorator(view_func):
         def wrapper(request, *args, **kwargs):
             user = request.user
-            profile_pk = kwargs['pk']
-            if not user.is_authenticated or not user.has_perms(required_permissions) or not user.id == profile_pk:
+            comment = CommentModel.objects.get(pk=kwargs['pk'])
+            if not user.is_authenticated or not user.has_perms(required_permissions) or not user.id == comment.owner.id:
                 return render(request, 'unauthorized_user.html')
             return view_func(request, *args, **kwargs)
 

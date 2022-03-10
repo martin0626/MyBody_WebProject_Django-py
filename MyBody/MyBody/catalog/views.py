@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, TemplateView
 from MyBody.catalog.forms import CreateForm, EditForm, DeleteArticleForm, CreateCommentForm
-from MyBody.catalog.helpers import article_permissions_required
+from MyBody.catalog.helpers import article_permissions_required, comments_permissions_required
 from MyBody.catalog.models import Article, LikeArticle, CommentModel
 
 
@@ -120,3 +120,11 @@ def like_article(request, pk):
         like.delete()
 
     return redirect('details article', pk)
+
+
+@comments_permissions_required(required_permissions=['catalog.delete_commentmodel'])
+def delete_comment(request, pk):
+    comment = CommentModel.objects.get(pk=pk)
+    article_id = comment.article_id
+    comment.delete()
+    return redirect('details article', article_id)

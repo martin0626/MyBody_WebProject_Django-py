@@ -25,6 +25,12 @@ class RegisterForm(BootsTrapMixin, UserCreationForm):
         model = UserModel
         fields = ('username', 'email',)
 
+    password2 = forms.CharField(
+        label=("Password confirmation"),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        strip=False,
+    )
+
 
 class LoginForm(BootsTrapMixin, AuthenticationForm):
     pass
