@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.views.generic import FormView
 
 from MyBody.catalog.forms import BootsTrapMixin
 from MyBody.users.models import Profile, MyBodyUser
@@ -33,4 +34,8 @@ class RegisterForm(BootsTrapMixin, UserCreationForm):
 
 
 class LoginForm(BootsTrapMixin, AuthenticationForm):
+    pass
+
+
+class ChangePassword(BootsTrapMixin, PasswordChangeForm):
     pass

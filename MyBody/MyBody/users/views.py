@@ -1,13 +1,13 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from MyBody.catalog.models import Article, LikeArticle
-from MyBody.users.forms import ProfileForm, RegisterForm, LoginForm
+from MyBody.catalog.views import UnauthorizedView
+from MyBody.users.forms import ProfileForm, RegisterForm, LoginForm, ChangePassword
 from MyBody.users.helpers import send_email_message
 from MyBody.users.models import MyBodyUser, Profile
 
@@ -36,39 +36,45 @@ class UserLogoutView(LogoutView):
     pass
 
 
-def profile_edit(request):
-    profile = Profile.objects.get(pk=request.user.id)
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile details', profile.pk)
-    else:
-        form = ProfileForm(instance=profile)
-
-    context = {
-        "form": form,
-        "profile": profile,
-    }
-    return render(request, 'profile_views/profile_create.html', context)
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'profile_views/change_password.html'
+    form_class = ChangePassword
 
 
-def profile_details(request, pk):
+class ProfileEdit(UpdateView):
+    template_name = 'profile_views/profile_create.html'
+    form_class = ProfileForm
+    model = Profile
+    
+    def dispatch(self, request, *args, **kwargs):
+        if kwargs['pk'] != request.user.id:
+            return redirect('unauthorized view')
+        return super().dispatch(request, *args, **kwargs)
 
-    profile = Profile.objects.get(pk=pk)
-    is_owner = request.user and request.user.id == profile.user_id
-    user = MyBodyUser.objects.get(pk=pk)
-    articles = Article.objects.filter(owner__profile=profile)
-    likes = len(list(LikeArticle.objects.filter(article_id__in=articles)))
-    context = {
-        'user': user,
-        'profile': profile,
-        'articles': articles,
-        'likes': likes,
-        'is_owner': is_owner,
-    }
+    def get_success_url(self):
+        return reverse_lazy('profile details', kwargs={'pk': self.object.user_id})
 
-    return render(request, 'profile_views/profile_details.html', context)
+
+class ProfileDetails(DetailView):
+    template_name = 'profile_views/profile_details.html'
+    model = Profile
+    context_object_name = 'profile'
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        articles = Article.objects.filter(owner_id=self.object.user_id)
+        likes = len(list(LikeArticle.objects.filter(article_id__in=articles)))
+        is_owner = self.request.user and self.request.user.id == self.object.user_id
+        context = super().get_context_data(**kwargs)
+        context.update(
+            {
+                'user': user,
+                'articles': articles,
+                'likes': likes,
+                'is_owner': is_owner,
+            }
+        )
+        return context
 
 
 @login_required(login_url='login/')

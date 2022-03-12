@@ -15,14 +15,19 @@
                     {% if profile.picture %}
                         <img src="{{ profile.picture.url }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
                     {% else %}
-                        <img src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                        <img src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png" alt="..."
+                             width="130" class="rounded mb-2 img-thumbnail">
                     {% endif %}
                 </div>
-                <form method="post" action="{% url 'profile edit' %}" enctype="multipart/form-data">
+                <form method="post" action="{% url 'profile edit' profile.user_id %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form }}
-                    <button class="btn btn-primary mt-2">Save changes</button>
-                    <a href="{% url 'profile delete' %}" class="btn btn-danger mt-2">Delete profile</a>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary mt-2">Save changes</button>
+                        <a href="{% url 'change password' %}" class="btn btn-success mt-2">Change Password</a>
+                        <a href="{% url 'profile delete' %}" class="btn btn-danger mt-2">Delete profile</a>
+                    </div>
+
                 </form>
             </div>
             <div class="col-lg-3"></div>

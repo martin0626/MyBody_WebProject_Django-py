@@ -90,9 +90,10 @@
                         {% endif %}
                             <div class="chip chip-md">
                             {% if comment.owner.profile.picture %}
-                                <img class="rounded-circle border border-dark"
+                                <a class="text-decoration-none text-dark" href="{% url 'profile details' comment.owner.id %}"><img class="rounded-circle border border-dark"
                                      src="{{ comment.owner.profile.picture.url }}"
                                      alt="Contact Person"> {{ comment.owner.username }}
+                                </a>
                             {% else %}
                                 <img class="rounded-circle border border-dark"
                                      src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
