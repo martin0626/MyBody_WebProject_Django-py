@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'MyBody.home',
     'MyBody.users',
     'MyBody.catalog',
+
+    'django_filters',
 ]
 
 MIDDLEWARE = [

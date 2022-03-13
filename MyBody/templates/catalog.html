@@ -2,8 +2,9 @@
 
 {% block body %}
     <h1 class="mx-5 my-5 text-center text-white">Catalog</h1>
-    {% if articles %}
 
+
+    {% if articles %}
         <div class="album py-5">
             <div class="container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -19,7 +20,7 @@
                                 <div class="card-body">
                                     <p class="card-text text-dark text-center"
                                        style="font-size: 25px">{{ article.title }}</p>
-                                    <p><a class="btn btn-secondary" href="{% url 'details article' article.id %}">Details
+                                    <p><a class="btn btn-success" href="{% url 'details article' article.id %}">Details
                                         »</a></p>
                                 </div>
                             </div>
@@ -44,9 +45,7 @@
                         <a class="page-link" href="#">Previous</a>
                     </li>
                 {% endif %}
-                {#                    <li class="page-item">#}
-                {#                        <a class="page-link" href="#">{{page_obj.number}} of {{ page_obj.paginator.num_pages }} <span class="sr-only">(current)</span></a>#}
-                {#                    </li>#}
+
                 {% for page_num in page_obj.paginator.page_range %}
                     {% if page_num == page_obj.number %}
                         <li class="page-item active">

@@ -3,6 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, TemplateView
+
+from MyBody.catalog.filters import ArticleTypeFilter
 from MyBody.catalog.forms import CreateForm, EditForm, DeleteArticleForm, CreateCommentForm
 from MyBody.catalog.helpers import article_permissions_required, comments_permissions_required
 from MyBody.catalog.models import Article, LikeArticle, CommentModel
@@ -12,12 +14,24 @@ class UnauthorizedView(TemplateView):
     template_name = 'unauthorized_user.html'
 
 
+class SearchView(ListView):
+    model = Article
+    template_name = 'search_catalog.html'
+    ordering = 'title'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = ArticleTypeFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
+
 class CatalogView(ListView):
     model = Article
     template_name = 'catalog.html'
     context_object_name = 'articles'
     ordering = ('title',)
     paginate_by = 3
+
 
 
 class CreateArticle(LoginRequiredMixin, CreateView):

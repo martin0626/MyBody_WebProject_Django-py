@@ -1,7 +1,7 @@
 from django.urls import path
 
 from MyBody.catalog.views import delete_article, edit_article, details_article, \
-    like_article, CreateArticle, CatalogView, UnauthorizedView, delete_comment
+    like_article, CreateArticle, CatalogView, UnauthorizedView, delete_comment, SearchView
 
 urlpatterns = [
     path('', CatalogView.as_view(), name='catalog'),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('like/<int:pk>', like_article, name='like'),
     path('unauthorized/', UnauthorizedView.as_view(), name='unauthorized view'),
     path('comment/delete/<int:pk>', delete_comment, name='delete comment'),
+    path('search/', SearchView.as_view(), name='search catalog'),
 ]

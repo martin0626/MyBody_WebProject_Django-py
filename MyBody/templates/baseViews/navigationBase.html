@@ -22,6 +22,9 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
+                            <a class="nav-link" href={% url 'search catalog' %}><i class="fa fa-search" style="font-size: 20px"></i></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href={% url 'catalog' %}>Catalog</a>
                         </li>
                     {% if request.user.is_authenticated %}
