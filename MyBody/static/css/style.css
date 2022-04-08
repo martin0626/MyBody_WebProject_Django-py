@@ -1,9 +1,17 @@
 body {
-    background-image: linear-gradient( rgb(0 0 0 / 70%), rgb(0 0 0 / 70%)), url(/static/images/free-fitness-wallpaper-42312-43308-hd-wallpapers.jpg);
+    background-image: linear-gradient(rgb(0 0 0 / 70%), rgb(0 0 0 / 70%)), url(/static/images/free-fitness-wallpaper-42312-43308-hd-wallpapers.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.form-cr {
+   min-height:100%;
+   position:relative;
 }
 
 .container-marketing {
@@ -11,7 +19,7 @@ body {
     color: white;
 }
 
-section{
+section {
     margin: 150px;
     color: white;
 }
