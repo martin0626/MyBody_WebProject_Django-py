@@ -33,6 +33,9 @@ class MyBodyUser(AbstractBaseUser, PermissionsMixin):
 
     objects = MyBodyUserManager()
 
+    def __str__(self):
+        return self.username
+
 
 class Profile(models.Model):
     PICTURE_MAX_SIZE = 5
@@ -91,3 +94,6 @@ class Profile(models.Model):
                 today.month == self.birth_date.month and today.day < self.birth_date.day):
             years -= 1
         return years
+
+    def __str__(self):
+        return self.user.username

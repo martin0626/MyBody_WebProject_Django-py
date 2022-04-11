@@ -4,6 +4,14 @@ from django.contrib.auth.admin import UserAdmin
 from MyBody.users.models import Profile, MyBodyUser
 
 
+
+
+class ProfileInlineAdmin(admin.StackedInline):
+    model = Profile
+    max_num = 1
+    can_delete = False
+
+
 @admin.register(MyBodyUser)
 class MyBodyUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'is_staff')
@@ -18,6 +26,7 @@ class MyBodyUserAdmin(UserAdmin):
         }),
         ('Important dates', {'fields': ('last_login',)}),
     )
+    inlines = [ProfileInlineAdmin]
 
 
 @admin.register(Profile)
