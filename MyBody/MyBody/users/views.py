@@ -1,4 +1,4 @@
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.shortcuts import render, redirect
@@ -6,10 +6,10 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from MyBody.catalog.models import Article, LikeArticle
-from MyBody.catalog.views import UnauthorizedView
+
 from MyBody.users.forms import ProfileForm, RegisterForm, LoginForm, ChangePassword
-from MyBody.users.helpers import send_email_message
-from MyBody.users.models import MyBodyUser, Profile
+
+from MyBody.users.models import Profile
 
 
 class UserLoginView(LoginView):
@@ -45,7 +45,7 @@ class ProfileEdit(UpdateView):
     template_name = 'profile_views/profile_create.html'
     form_class = ProfileForm
     model = Profile
-    
+
     def dispatch(self, request, *args, **kwargs):
         if kwargs['pk'] != request.user.id:
             return redirect('unauthorized view')
