@@ -33,7 +33,6 @@ class CatalogView(ListView):
     paginate_by = 3
 
 
-
 class CreateArticle(LoginRequiredMixin, CreateView):
     model = Article
     form_class = CreateForm
@@ -102,8 +101,11 @@ def details_article(request, pk):
             return redirect('details article', article.id)
 
     else:
-        form = CreateCommentForm()
+        viewed_articles_ids = request.session.get('viewed_articles_ids', [])
 
+        viewed_articles_ids.insert(0, pk)
+        request.session['viewed_articles_ids'] = viewed_articles_ids[:3]
+        form = CreateCommentForm()
     context = {
         'form': form,
         'article': article,

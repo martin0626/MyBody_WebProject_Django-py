@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'MyBody.middlewares.last_viewed_articles_middleware'
 ]
 
 ROOT_URLCONF = 'MyBody.urls'
@@ -112,21 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     #     "NAME": f"{AUTH_PWD_MODULE}NumericPasswordValidator",
     # },
 ]
-
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.users.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.users.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.users.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.users.password_validation.NumericPasswordValidator',
-#     },
-# ]
 
 
 # Internationalization

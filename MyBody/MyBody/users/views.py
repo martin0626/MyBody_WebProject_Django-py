@@ -19,6 +19,11 @@ class UserLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('home')
 
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        self.request.session['viewed_articles_ids'] = []
+        return result
+
 
 class UserRegistrationView(CreateView):
     form_class = RegisterForm
@@ -28,7 +33,7 @@ class UserRegistrationView(CreateView):
     def form_valid(self, form):
         result = super().form_valid(form)
         login(self.request, self.object)
-
+        self.request.session['viewed_articles_ids'] = []
         return result
 
 
