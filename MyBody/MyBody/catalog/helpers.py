@@ -11,8 +11,9 @@ def article_permissions_required(required_permissions):
             pk = kwargs['pk']
 
             article = Article.objects.get(pk=pk)
-            if not user.is_authenticated or not user.has_perms(required_permissions) or not article.owner.id == user.id:
-                return redirect('unauthorized view')
+            if not user.is_superuser:
+                if not user.is_authenticated or not user.groups.filter(name='Regular User').exists() or not article.owner.id == user.id:
+                    return redirect('unauthorized view')
             return view_func(request, *args, **kwargs)
 
         return wrapper
@@ -25,8 +26,9 @@ def comments_permissions_required(required_permissions):
         def wrapper(request, *args, **kwargs):
             user = request.user
             comment = CommentModel.objects.get(pk=kwargs['pk'])
-            if not user.is_authenticated or not user.has_perms(required_permissions) or not user.id == comment.owner.id:
-                return render(request, 'unauthorized_user.html')
+            if not user.is_superuser:
+                if not user.is_authenticated or not user.groups.filter(name='Regular User').exists() or not user.id == comment.owner.id:
+                    return render(request, 'unauthorized_user.html')
             return view_func(request, *args, **kwargs)
 
         return wrapper
