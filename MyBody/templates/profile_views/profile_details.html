@@ -1,10 +1,10 @@
 {% extends 'baseViews/base.html' %}
-{#{% load static %}#}
+{% load static %}
 
 
 {% block styles %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/profile_details.css">
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}css/profile_details.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 {% endblock %}
 
@@ -27,7 +27,7 @@
                             </div>
                         {% else %}
                             <div class="profile mr-3">
-                                <img src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png"
+                                <img src="{% get_static_prefix %}images/profile_pics/451-4517876_default-profile-hd-png-download.png"
                                      alt="..." width="130" class="rounded mb-2 img-thumbnail">
                                 {% if is_owner %}
                                     <a href="{% url 'profile edit' user.id %}" class="btn btn-outline-dark btn-sm btn-block">Edit
@@ -77,9 +77,9 @@
                 <div class="py-4 px-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         {% if is_owner %}
-                            <h5 class="mb-0">My articles:</h5>
+                            <h5 class="mb-0">My Articles:</h5>
                         {% else %}
-                            <h5 class="mb-0">{{ user.username }} articles:</h5>
+                            <h5 class="mb-0">{{ profile.user.username }} Articles:</h5>
                         {% endif %}
                     </div>
                     <div class="row">

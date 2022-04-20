@@ -56,7 +56,7 @@ def edit_article(request, pk):
         form = EditForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             article = form.save(commit=False)
-            article.owner = request.user
+            article.owner = article.owner
             article.save()
             return redirect('details article', pk)
 

@@ -15,7 +15,7 @@
                     {% if profile.picture %}
                         <img src="{{ profile.picture.url }}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
                     {% else %}
-                        <img src="/static/images/profile_pics/451-4517876_default-profile-hd-png-download.png" alt="..."
+                        <img src="{% get_static_prefix %}images/profile_pics/451-4517876_default-profile-hd-png-download.png" alt="..."
                              width="130" class="rounded mb-2 img-thumbnail">
                     {% endif %}
                 </div>

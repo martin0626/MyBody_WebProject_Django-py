@@ -9,7 +9,7 @@ from MyBody.catalog.models import Article, LikeArticle
 
 from MyBody.users.forms import ProfileForm, RegisterForm, LoginForm, ChangePassword
 
-from MyBody.users.models import Profile
+from MyBody.users.models import Profile, MyBodyUser
 
 
 class UserLoginView(LoginView):
