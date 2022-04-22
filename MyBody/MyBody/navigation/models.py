@@ -1,3 +1,4 @@
+import crum
 from django.db import models
 from django.urls import reverse
 from mptt.fields import TreeForeignKey
@@ -15,6 +16,7 @@ class Navigation(models.Model):
         ('catalog', 'catalog'),
         ('search catalog', 'search catalog'),
         ('profile details', 'profile details'),
+        ('create article', 'create article'),
     )
 
     VISIBLE_CHOICES = (
@@ -65,6 +67,9 @@ class Navigation(models.Model):
         return self.title
 
     def get_absolute_url(self):
+        if self.url_name == 'profile details':
+            user = crum.get_current_user()
+            return reverse(self.url_name, args=[str(user.id)])
         return reverse(self.url_name)
 
     class Meta:

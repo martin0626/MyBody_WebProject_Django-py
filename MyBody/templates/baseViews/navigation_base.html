@@ -63,8 +63,7 @@
 
                         {% if nav_item.visible == 'authenticate'  and request.user.is_authenticated %}
                             <li class="nav-item">
-                                <a class="nav-link {{ nav_item.fa_icon }}" href="{{ nav_item.get_absolute_url }}"
-
+                                <a class="nav-link {{ nav_item.fa_icon }}" href="{{nav_item.get_absolute_url}}"
                                     {% if nav_item.fa_icon %}
                                         style="font-size: 20px"
                                     {% endif %}>

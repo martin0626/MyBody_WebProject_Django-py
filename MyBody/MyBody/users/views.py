@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
 
 from MyBody.catalog.models import Article, LikeArticle
+from MyBody.navigation.models import Navigation
 
 from MyBody.users.forms import ProfileForm, RegisterForm, LoginForm, ChangePassword
 
@@ -57,22 +58,23 @@ class ProfileEdit(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('profile details', kwargs={'pk': self.object.user_id})
+        return reverse_lazy('profile details')
 
 
-class ProfileDetails(TemplateView):
+class ProfileDetails(DetailView):
     template_name = 'profile_views/profile_details.html'
     model = Profile
+    context_object_name = 'profile'
 
     def get_context_data(self, **kwargs):
-        user = self.request.user
-        articles = Article.objects.filter(owner_id=self.request.user.id)
+        pk = self.kwargs['pk']
+        user = MyBodyUser.objects.get(id=pk)
+        articles = Article.objects.filter(owner_id=pk)
         likes = len(list(LikeArticle.objects.filter(article_id__in=articles)))
-        is_owner = self.request.user and self.request.user.id == self.request.user.id
+        is_owner = self.request.user and self.request.user.id == pk
         context = super().get_context_data(**kwargs)
         context.update(
             {
-                'profile': self.request.user.profile,
                 'user': user,
                 'articles': articles,
                 'likes': likes,

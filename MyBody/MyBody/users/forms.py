@@ -18,6 +18,11 @@ class ProfileForm(BootsTrapMixin, forms.ModelForm):
                 attrs={
                     'rows': 3,
                 }),
+            'birth_date': forms.DateInput(
+                attrs={
+                    'id': 'datepicker',
+                }
+            )
         }
 
 
