@@ -1,47 +1,152 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/"><i class="fa fa-home" style="font-size: 30px"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        {% for nav_item in navigation %}
+            {% if nav_item.url_name == 'home' %}
+                <a class="navbar-brand" href="{{ nav_item.get_absolute_url }}"><i class="fa fa-home"
+                                                                                  style="font-size: 30px"></i></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            {% endif %}
+        {% endfor %}
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href={% url 'search catalog' %}><i class="fa fa-search"
-                                                                           style="font-size: 20px"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href={% url 'catalog' %}>Catalog</a>
-                </li>
+                {% for nav_item in navigation %}
+                    {% if nav_item.left_side and nav_item.url_name != 'home' %}
 
-                {% if request.user.is_authenticated %}
+                        {% if nav_item.visible == 'authenticate'  and request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link {{ nav_item.fa_icon }}" href="{{ nav_item.get_absolute_url }}"
 
-                    <li class="nav-item">
-                        <a class="nav-link user" href={% url 'create article' %}>Create</a>
-                    </li>
-                {% endif %}
+                                        {% if nav_item.fa_icon %}
+                                   style="font-size: 20px"
+                                        {% endif %}>
+                                    {% if not nav_item.fa_icon %}
+                                        {{ nav_item.title }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if nav_item.visible == 'anonymous' and not request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link {{ nav_item.fa_icon }}" href="{{ nav_item.get_absolute_url }}"
+
+                                        {% if nav_item.fa_icon %}
+                                   style="font-size: 20px"
+                                        {% endif %}>
+                                    {% if not nav_item.fa_icon %}
+                                        {{ nav_item.title }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if nav_item.visible == 'all' %}
+                            <li class="nav-item">
+                                <a class="nav-link {{ nav_item.fa_icon }}" href="{{ nav_item.get_absolute_url }}"
+
+                                        {% if nav_item.fa_icon %}
+                                   style="font-size: 20px"
+                                        {% endif %}>
+                                    {% if not nav_item.fa_icon %}
+                                        {{ nav_item.title }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             </ul>
-
             <ul class="nav navbar-nav navbar-right" id="navbarText">
-                {% if not request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link guest" href="{% url 'login' %}">Login</a>
-                    </li>
+                {% for nav_item in navigation %}
+                    {% if not nav_item.left_side and nav_item.url_name != 'home' %}
 
-                    <li class="nav-item">
-                        <a class="nav-link user" href="{% url 'register' %}">Register</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link user" href="{% url 'profile details' request.user.id %}">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link user" href="{% url 'logout' %}">Logout</a>
-                    </li>
-                {% endif %}
+                        {% if nav_item.visible == 'authenticate'  and request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link {{ nav_item.fa_icon }}" href="{{ nav_item.get_absolute_url }}"
 
+                                    {% if nav_item.fa_icon %}
+                                        style="font-size: 20px"
+                                    {% endif %}>
+                                    {% if not nav_item.fa_icon %}
+                                        {{ nav_item.title }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if nav_item.visible == 'anonymous' and not request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link {{ nav_item.fa_icon }}" href="{{ nav_item.get_absolute_url }}"
+
+                                    {% if nav_item.fa_icon %}
+                                        style="font-size: 20px"
+                                    {% endif %}>
+                                    {% if not nav_item.fa_icon %}
+                                        {{ nav_item.title }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if nav_item.visible == 'all' %}
+                            <li class="nav-item">
+                                <a class="nav-link {{ nav_item.fa_icon }}" href="{{ nav_item.get_absolute_url }}"
+
+                                        {% if nav_item.fa_icon %}
+                                   style="font-size: 20px"
+                                        {% endif %}>
+                                    {% if not nav_item.fa_icon %}
+                                        {{ nav_item.title }}
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             </ul>
+
+            {#        <a class="navbar-brand" href="/"><i class="fa fa-home" style="font-size: 30px"></i></a>#}
+            {#        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"#}
+            {#                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">#}
+            {#            <span class="navbar-toggler-icon"></span>#}
+            {#        </button>#}
+            {##}
+            {#        <div class="collapse navbar-collapse" id="navbarText">#}
+            {#            <ul class="navbar-nav me-auto mb-2 mb-lg-0">#}
+            {#                <li class="nav-item">#}
+            {#                    <a class="nav-link" href={% url 'search catalog' %}><i class="fa fa-search"#}
+            {#                                                                           style="font-size: 20px"></i></a>#}
+            {#                </li>#}
+            {#                <li class="nav-item">#}
+            {#                    <a class="nav-link" href={% url 'catalog' %}>Catalog</a>#}
+            {#                </li>#}
+            {##}
+            {#                {% if request.user.is_authenticated %}#}
+            {##}
+            {#                    <li class="nav-item">#}
+            {#                        <a class="nav-link user" href={% url 'create article' %}>Create</a>#}
+            {#                    </li>#}
+            {#                {% endif %}#}
+            {#            </ul>#}
+            {##}
+            {#            <ul class="nav navbar-nav navbar-right" id="navbarText">#}
+            {#                {% if not request.user.is_authenticated %}#}
+            {#                    <li class="nav-item">#}
+            {#                        <a class="nav-link guest" href="{% url 'login' %}">Login</a>#}
+            {#                    </li>#}
+            {##}
+            {#                    <li class="nav-item">#}
+            {#                        <a class="nav-link user" href="{% url 'register' %}">Register</a>#}
+            {#                    </li>#}
+            {#                {% else %}#}
+            {#                    <li class="nav-item">#}
+            {#                        <a class="nav-link user" href="{% url 'profile details' %}">Profile</a>#}
+            {#                    </li>#}
+            {#                    <li class="nav-item">#}
+            {#                        <a class="nav-link user" href="{% url 'logout' %}">Logout</a>#}
+            {#                    </li>#}
+            {#                {% endif %}#}
+            {##}
+            {#            </ul>#}
 
             <span class="navbar-text">
 

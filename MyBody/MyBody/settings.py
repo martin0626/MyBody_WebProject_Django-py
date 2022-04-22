@@ -42,8 +42,11 @@ INSTALLED_APPS = [
     'MyBody.home',
     'MyBody.users',
     'MyBody.catalog',
+    'MyBody.navigation',
 
     'django_filters',
+    'mptt',
+    'adminsortable2'
 ]
 
 MIDDLEWARE = [
@@ -71,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'MyBody.navigation.context_processors.nav_processor'
             ],
         },
     },

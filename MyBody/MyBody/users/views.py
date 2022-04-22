@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView, TemplateView
 
 from MyBody.catalog.models import Article, LikeArticle
 
@@ -60,19 +60,19 @@ class ProfileEdit(UpdateView):
         return reverse_lazy('profile details', kwargs={'pk': self.object.user_id})
 
 
-class ProfileDetails(DetailView):
+class ProfileDetails(TemplateView):
     template_name = 'profile_views/profile_details.html'
     model = Profile
-    context_object_name = 'profile'
 
     def get_context_data(self, **kwargs):
         user = self.request.user
-        articles = Article.objects.filter(owner_id=self.object.user_id)
+        articles = Article.objects.filter(owner_id=self.request.user.id)
         likes = len(list(LikeArticle.objects.filter(article_id__in=articles)))
-        is_owner = self.request.user and self.request.user.id == self.object.user_id
+        is_owner = self.request.user and self.request.user.id == self.request.user.id
         context = super().get_context_data(**kwargs)
         context.update(
             {
+                'profile': self.request.user.profile,
                 'user': user,
                 'articles': articles,
                 'likes': likes,
